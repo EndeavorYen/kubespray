@@ -29,4 +29,5 @@
 
 ---
 nfd_dir: "/opt/nfd"
-
+kube_create: "kubectl create -f"
+kubeconfig: "/etc/kubernetes/admin.conf"
