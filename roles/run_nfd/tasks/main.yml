@@ -32,34 +32,27 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---
-  - name: Create nfd dir
-    file: "path={{ nfd_dir }} state=directory"
-
-  - name: Clone nfd
-    async: 600
-    poll: 10
-    git:
-      repo: "{{ nfd_repo }}"
-      dest: "{{ nfd_dir }}"
-      version: "{{ nfd_branch }}"
-      accept_hostkey: yes
-      recursive: no
-      force: yes
-
-  - name: Bring in shortened Makefile
+  - name: copy rbac and service account for nfd
     template:
-      dest: "{{ nfd_dir }}/Makefile"
-      src: short_makefile
+      dest: "{{ kube_config_dir }}/nfd_service.yaml"
+      src: service.yml.j2
 
-#  - name: Configure proxy in Docker build (if applicable)
-#    template:
-#      dest: "{{ nfd_dir }}/Makefile"
-#      src: proxy_makefile
-#    when: '"http_proxy" in calc_proxy_env or "https_proxy" in calc_proxy_env'
+  - name: copy template service account
+    template:
+      dest: "{{ nfd_dir }}/node-feature-discovery-job.json.template"
+      src: node.template
 
-  - name: Build nfd image
-    make:
+  - name: create nfd rbac and service account
+    command: "{{ kube_create }} {{ kube_config_dir }}/nfd_service.yaml"
+    environment:
+      KUBECONFIG: "{{ kubeconfig }}"
+    ignore_errors: true
+
+  - name: run nfd labels
+    command: "./label-nodes.sh"
+    args:
       chdir: "{{ nfd_dir }}"
-      params:
-        VERSION: "{{ nfd_version }}"
-        DOCKER_IMAGE_NAME: nfd
+    environment:
+      KUBECONFIG: "{{ kubeconfig }}"
+    ignore_errors: true
+
