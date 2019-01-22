@@ -28,7 +28,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ---
-nfd_version: "v0.3.0"
-nfd_dir: "/opt/nfd"
-nfd_repo: "http://github.com/kubernetes-incubator/node-feature-discovery"
-nfd_branch: "v0.3.0"
+cmk_dir: "/opt/cmk"
+cmk_repo: "https://github.com/intel/CPU-Manager-for-Kubernetes.git"
+cmk_branch: "77f784dd368f96d77e0bb381b071ce3a11bbe189"

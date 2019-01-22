@@ -84,6 +84,12 @@
     - { role: kubernetes/node, tags: node }
   environment: "{{proxy_env}}"
 
+- hosts: k8s-cluster
+  any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
+  roles:
+    - build_cmk
+
+
 - hosts: kube-master
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   roles:
@@ -140,7 +146,8 @@
     - { role: kubespray-defaults}
     - { role: kubernetes-apps, tags: apps }
 
-- hosts: k8s-cluster
+- hosts: kube-master
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   roles:
     - run_nfd
+    - run_cmk
