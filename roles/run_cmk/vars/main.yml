@@ -35,3 +35,4 @@
 cmk_dir: "/opt/cmk"
 kube_create: "kubectl create -f"
 kubeconfig: "/etc/kubernetes/admin.conf"
+cmk_img: "cmk:v1.3.0"
