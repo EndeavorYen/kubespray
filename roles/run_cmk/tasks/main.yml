@@ -55,13 +55,13 @@
       KUBECONFIG: "{{ kubeconfig }}"
     ignore_errors: true
 
-  - name: wait 10 sec
+  - name: wait 30 sec
     pause:
-      seconds: 10
+      seconds: 30
 
   - name: delete cmk taint
     command: "kubectl taint nodes {{ item }} cmk:NoSchedule-"
     with_items: "{{ groups.all }}"
     environment:
       KUBECONFIG: "{{ kubeconfig }}"
-    ignore_errors:
+    ignore_errors: true
