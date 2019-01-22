@@ -63,3 +63,6 @@
       params:
         VERSION: "{{ nfd_version }}"
         DOCKER_IMAGE_NAME: nfd
+    register: reg
+    retries: 5
+    until: reg | success
